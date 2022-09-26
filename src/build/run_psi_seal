@@ -1,0 +1,3 @@
+#!/bin/bash
+./she-seal 1 12345 & ./she-seal 2 12345
+

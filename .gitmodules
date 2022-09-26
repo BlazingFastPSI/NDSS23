@@ -1,0 +1,15 @@
+[submodule "emp-tool"]
+	path = emp-tool
+	url = https://github.com/emp-toolkit/emp-tool.git
+[submodule "emp-ot"]
+	path = emp-ot
+	url = https://github.com/emp-toolkit/emp-ot.git
+[submodule "PackedArray"]
+	path = PackedArray
+	url = https://github.com/gpakosz/PackedArray.git
+[submodule "wondershaper"]
+	path = wondershaper
+	url = https://github.com/magnific0/wondershaper
+[submodule "SEAL"]
+	path = SEAL
+	url = https://github.com/microsoft/SEAL.git

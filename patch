@@ -1,0 +1,94 @@
+diff --git a/emp-tool/io/highspeed_net_io_channel.h b/emp-tool/io/highspeed_net_io_channel.h
+index bdbcd64..04a32ee 100644
+--- a/emp-tool/io/highspeed_net_io_channel.h
++++ b/emp-tool/io/highspeed_net_io_channel.h
+@@ -55,7 +55,7 @@ class SenderSubChannel: public SubChannel {public:
+ 		ptr = 0;
+ 	}
+ 
+-	void send_data(const void * data, int len) {
++	void send_data(const void * data, size_t len) {
+ 		if (len <= NETWORK_BUFFER_SIZE2 - ptr) {
+ 			memcpy(buf + ptr, data, len);
+ 			ptr +=len;
+@@ -66,15 +66,15 @@ class SenderSubChannel: public SubChannel {public:
+ 		}
+ 	}
+ 
+-	void send_data_raw(const void * data, int len) {
++	void send_data_raw(const void * data, size_t len) {
+ 		counter += len;
+-		int sent = 0;
++		size_t sent = 0;
+ 		while(sent < len) {
+-			int res = fwrite(sent + (char*)data, 1, len - sent, stream);
++			size_t res = fwrite(sent + (char*)data, 1, len - sent, stream);
+ 			if (res >= 0)
+ 				sent+=res;
+ 			else
+-				fprintf(stderr,"error: net_send_data %d\n", res);
++				fprintf(stderr,"error: net_send_data %ld\n", res);
+ 		}
+ 	}
+ };
+@@ -88,12 +88,12 @@ class RecverSubChannel: public SubChannel {public:
+ 		ptr = NETWORK_BUFFER_SIZE2;
+ 	}
+ 
+-	void recv_data(void * data, int len) {
++	void recv_data(void * data, size_t len) {
+ 		if(len <= NETWORK_BUFFER_SIZE2 - ptr) {
+ 			memcpy(data, buf + ptr, len);
+ 			ptr += len;
+ 		} else {
+-			int remain = len;
++			size_t remain = len;
+ 			memcpy(data, buf + ptr, NETWORK_BUFFER_SIZE2 - ptr);
+ 			remain -=NETWORK_BUFFER_SIZE2 - ptr;
+ 
+@@ -111,15 +111,15 @@ class RecverSubChannel: public SubChannel {public:
+ 		}
+ 	}
+ 
+-	void recv_data_raw(void  * data, int len) {
++	void recv_data_raw(void  * data, size_t len) {
+ 		counter+=len;
+-		int sent = 0;
++		size_t sent = 0;
+ 		while(sent < len) {
+-			int res = fread(sent + (char*)data, 1, len - sent, stream);
++			size_t res = fread(sent + (char*)data, 1, len - sent, stream);
+ 			if (res >= 0)
+ 				sent += res;
+ 			else 
+-				fprintf(stderr,"error: net_send_data %d\n", res);
++				fprintf(stderr,"error: net_send_data %ld\n", res);
+ 		}
+ 	}
+ };
+diff --git a/emp-tool/io/io_channel.h b/emp-tool/io/io_channel.h
+index ca660f8..0299505 100644
+--- a/emp-tool/io/io_channel.h
++++ b/emp-tool/io/io_channel.h
+@@ -9,12 +9,12 @@ namespace emp {
+ template<typename T> 
+ class IOChannel { public:
+ 	uint64_t counter = 0;
+-	void send_data(const void * data, int nbyte) {
++	void send_data(const void * data, size_t nbyte) {
+ 		counter +=nbyte;
+ 		derived().send_data_internal(data, nbyte);
+ 	}
+ 
+-	void recv_data(void * data, int nbyte) {
++	void recv_data(void * data, size_t nbyte) {
+ 		derived().recv_data_internal(data, nbyte);
+ 	}
+ 
+@@ -123,4 +123,4 @@ class IOChannel { public:
+ 	}
+ };
+ }
+-#endif
+\ No newline at end of file
++#endif

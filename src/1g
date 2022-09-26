@@ -1,0 +1,3 @@
+#!/bin/bash
+sudo ../wondershaper/wondershaper -c -a lo
+sudo ../wondershaper/wondershaper -a lo -d 1048576 -u 1048576

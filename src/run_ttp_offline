@@ -1,0 +1,2 @@
+#!/bin/bash
+./opt-sender 1 12345 & ./opt-receiver 2 12345
